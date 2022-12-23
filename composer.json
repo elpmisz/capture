@@ -1,0 +1,7 @@
+{
+  "require": {
+    "spatie/browsershot": "^3.57",
+    "twbs/bootstrap": "^5.2",
+    "components/jquery": "^3.6"
+  }
+}
