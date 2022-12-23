@@ -8,6 +8,7 @@ require_once(__DIR__ . "/vendor/autoload.php");
 use Spatie\Browsershot\Browsershot;
 
 $token = (isset($_POST["token"]) ? $_POST["token"] : "");
+$text = (isset($_POST["text"]) ? $_POST["text"] : "");
 $url = (isset($_POST["url"]) ? $_POST["url"] : "");
 
 if (!empty($url)) {
@@ -26,12 +27,11 @@ if (!empty($url)) {
   fclose($destination);
 
   if (!empty($token)) {
-    $msg = "ทดสอบส่งข้อความ";
     $fullpath = dirname(__FILE__) . "/images/{$name}";
     $file = curl_file_create($fullpath);
 
     $arr = [
-      "message" => $msg,
+      "message" => $text,
       "imageFile" => $file,
     ];
 
@@ -70,12 +70,26 @@ function line_notify($res, $token)
   <div class="container mt-5">
     <div class="row">
       <div class="col-12">
-        <form action="#" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post" class="needs-validation" novalidate>
           <div class="row">
             <div class="col-12">
               <div class="input-group input-group-sm mb-3">
                 <span class="input-group-text">TOKEN</span>
-                <input type="text" class="form-control form-control-sm" name="token">
+                <input type="text" class="form-control form-control-sm" name="token" required>
+                <div class="invalid-feedback">
+                  Please fill out this field.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text">TEXT</span>
+                <input type="text" class="form-control form-control-sm" name="text" required>
+                <div class="invalid-feedback">
+                  Please fill out this field.
+                </div>
               </div>
             </div>
           </div>
@@ -83,7 +97,10 @@ function line_notify($res, $token)
             <div class="col-12">
               <div class="input-group input-group-sm mb-3">
                 <span class="input-group-text">URL</span>
-                <input type="text" class="form-control form-control-sm" name="url">
+                <input type="text" class="form-control form-control-sm" name="url" required>
+                <div class="invalid-feedback">
+                  Please fill out this field.
+                </div>
               </div>
             </div>
           </div>
@@ -108,6 +125,28 @@ function line_notify($res, $token)
 
   <script src="/vendor/components/jquery/jquery.min.js"></script>
   <script src="/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (() => {
+      'use strict'
+
+      const forms = document.querySelectorAll('.needs-validation')
+
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+
+    $(document).on("click", "button[type='submit']", function() {
+      $("img").prop("src", "");
+    })
+  </script>
 </body>
 
 </html>
