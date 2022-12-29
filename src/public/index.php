@@ -46,7 +46,7 @@ if (!empty($url)) {
       "imageFile" => $file,
     ];
 
-    line_notify($arr, $token);
+    echo line_notify($arr, $token);
   }
 }
 
@@ -100,7 +100,7 @@ function line_notify($res, $token)
             <div class="col-10">
               <div class="input-group input-group-sm mb-3">
                 <span class="input-group-text">TOKEN</span>
-                <input type="text" class="form-control form-control-sm" name="token" required>
+                <input type="text" class="form-control form-control-sm" name="token" value="XyaQ9gT5s5XxeGW7e8o3sX0A51VPL6mBmWynnfgsdsO" required>
                 <div class="invalid-feedback">
                   Please fill out this field.
                 </div>
