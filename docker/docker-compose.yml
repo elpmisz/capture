@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: capture-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ../src:/var/www
+
+  server:
+    image: nginx:alpine
+    container_name: capture-server
+    restart: unless-stopped
+    ports:
+      - 1000:80
+    volumes:
+      - ../src:/var/www
+      - ./nginx:/etc/nginx/conf.d
+
+  database:
+    image: mariadb:latest
+    container_name: capture-database
+    restart: unless-stopped
+    ports:
+      - 3301:3306
+    command: ['--sql_mode=']
+    environment:
+      MARIADB_ROOT_PASSWORD: P@ssw0rd#db
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: capture-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - 1001:80
+    environment:
+      PMA_HOST: database
+  
